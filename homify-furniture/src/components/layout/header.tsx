@@ -6,7 +6,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { useCart } from "@/store/hooks";
 
-const Header = () => {
+export default function Header () {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { itemCount, openCart } = useCart();
   return (
@@ -25,13 +25,13 @@ const Header = () => {
             Home
           </Link>
           <Link
-            href=""
+            href="/products"
             className="text-sm font-medium text-foreground/80 hover:text-primary transition-colors"
           >
             Shop
           </Link>
           <Link
-            href=""
+            href="/"
             className="text-sm font-medium text-foreground/80 hover:text-primary transition-colors"
           >
             Custom Orders
@@ -119,4 +119,3 @@ const Header = () => {
   );
 };
 
-export default Header;

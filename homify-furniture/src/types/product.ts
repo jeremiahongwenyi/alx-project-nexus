@@ -8,8 +8,8 @@ export interface Product {
   price: number;
   originalPrice?: number;
   category: CategoryId;
-  image: StaticImageData;
-  images?: StaticImageData[];
+  image: StaticImageData | string;
+  images?: StaticImageData[] ;
   inStock: boolean;
   stockCount?: number;
   isNew?: boolean;
