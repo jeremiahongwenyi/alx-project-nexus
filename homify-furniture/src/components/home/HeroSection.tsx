@@ -6,7 +6,7 @@ import { ArrowRight } from "lucide-react";
 
 export default function HeroSection() {
   return (
-     <section className="relative h-[70vh] md:h-[80vh] min-h-125 overflow-hidden">
+     <section className="relative px-4  h-[70vh] md:h-[80vh] min-h-125 overflow-hidden">
       {/* Background Image */}
       <Image
         src="/hero-living-room.png"

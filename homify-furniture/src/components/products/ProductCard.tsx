@@ -1,12 +1,12 @@
-"use client"
+"use client";
 
-import  Link from "next/link";
+import Link from "next/link";
 import Image from "next/image";
 import { Product } from "@/types/product";
 import { formatPrice, getDiscountPercentage } from "@/data/products";
 import { Star, ShoppingCart } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useCart } from "@/contexts/CartContext";
+import { useCart } from "@/store/hooks";
 import { cn } from "@/lib/utils";
 
 interface ProductCardProps {
@@ -15,7 +15,8 @@ interface ProductCardProps {
 
 export function ProductCard({ product }: ProductCardProps) {
   const { addItem } = useCart();
-  const hasDiscount = product.originalPrice && product.originalPrice > product.price;
+  const hasDiscount =
+    product.originalPrice && product.originalPrice > product.price;
   const discountPercent = hasDiscount
     ? getDiscountPercentage(product.originalPrice!, product.price)
     : 0;
@@ -23,7 +24,10 @@ export function ProductCard({ product }: ProductCardProps) {
   return (
     <div className="product-card group bg-card rounded-xl overflow-hidden shadow-product">
       {/* Image container */}
-      <Link href={`/product/${product.id}`} className="relative block aspect-4/3 overflow-hidden">
+      <Link
+        href={`/product/${product.id}`}
+        className="relative block aspect-4/3 overflow-hidden"
+      >
         <Image
           src={product.image}
           alt={product.name}

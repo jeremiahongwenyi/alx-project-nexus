@@ -2,19 +2,14 @@
 "use client";
 
 import { Toaster } from "sonner";
-import { CartProvider } from "@/contexts/CartContext";
+import { ReduxProvider } from "./ReduxProvider";
 
 export function Providers({ children }: { children: React.ReactNode }) {
   return (
-    <CartProvider>
+    <ReduxProvider>
       {children}
 
-      <Toaster
-        position="top-right"
-        richColors
-        closeButton
-        theme="system"
-      />
-    </CartProvider>
+      <Toaster position="top-right" richColors closeButton theme="system" />
+    </ReduxProvider>
   );
 }

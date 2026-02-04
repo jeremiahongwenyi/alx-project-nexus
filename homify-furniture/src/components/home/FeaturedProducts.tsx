@@ -9,7 +9,7 @@ export  default function FeaturedProducts() {
   const featuredProducts = products.slice(0, 4);
 
   return (
-    <section className="py-16 md:py-24">
+    <section className="py-16 px-4  md:py-24">
       <div className="container">
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4">
           <div>
