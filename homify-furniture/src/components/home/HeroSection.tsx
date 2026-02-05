@@ -50,7 +50,7 @@ export default function HeroSection() {
               className="border-primary-foreground/50 text-primary-foreground hover:bg-primary-foreground/10 bg-transparent"
               asChild
             >
-              <Link href="/custom">Custom Orders</Link>
+              <Link href="/customorders">Custom Orders</Link>
             </Button>
           </div>
         </div>

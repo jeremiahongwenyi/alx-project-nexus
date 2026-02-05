@@ -27,7 +27,7 @@ export default function Footer (){
                 </Link>
               </li>
               <li>
-                <Link href="/custom" className="hover:text-primary-foreground transition-colors">
+                <Link href="/customorders" className="hover:text-primary-foreground transition-colors">
                   Custom Orders
                 </Link>
               </li>

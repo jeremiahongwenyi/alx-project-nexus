@@ -31,7 +31,7 @@ export default function Header () {
             Shop
           </Link>
           <Link
-            href="/"
+            href="/customorders"
             className="text-sm font-medium text-foreground/80 hover:text-primary transition-colors"
           >
             Custom Orders
