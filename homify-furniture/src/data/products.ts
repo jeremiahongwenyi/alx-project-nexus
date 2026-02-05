@@ -172,5 +172,5 @@ export const getDiscountPercentage = (original: number, current: number): number
   return Math.round(((original - current) / original) * 100);
 };
 
-export const SELLER_WHATSAPP = "+254712345678";
+export const SELLER_WHATSAPP = "+254719352072";
 export const BUSINESS_NAME = "UrbanNest Furniture";

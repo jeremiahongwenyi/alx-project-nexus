@@ -1,5 +1,7 @@
 import  Link  from "next/link";
 import { MapPin, Phone, Mail, Clock } from "lucide-react";
+import { SELLER_WHATSAPP } from "@/data/products";
+
 
 export default function Footer (){
   return (
@@ -8,7 +10,7 @@ export default function Footer (){
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
           {/* Brand */}
           <div className="space-y-4">
-            <h3 className="font-display text-2xl font-bold">Homify Furniture</h3>
+            <Link href="/" className="font-display text-2xl font-bold">Homify Furniture</Link>
             <p className="text-primary-foreground/80 text-sm leading-relaxed">
               Custom comfort for modern living. Premium furniture crafted for
               your unique lifestyle.
@@ -35,9 +37,9 @@ export default function Footer (){
                 </Link>
               </li>
               <li>
-                <Link href="/faq" className="hover:text-primary-foreground transition-colors">
+                {/* <Link href="/faq" className="hover:text-primary-foreground transition-colors">
                   FAQs
-                </Link>
+                </Link> */}
               </li>
             </ul>
           </div>
@@ -75,34 +77,34 @@ export default function Footer (){
             <ul className="space-y-3 text-sm text-primary-foreground/80">
               <li className="flex items-start gap-2">
                 <MapPin className="h-4 w-4 mt-0.5 shrink-0" />
-                <span>Westlands, Nairobi, Kenya</span>
+                <span>Ruiru, Kiambu County, Kenya</span>
               </li>
               <li className="flex items-center gap-2">
                 <Phone className="h-4 w-4 shrink-0" />
-                <span>+254 712 345 678</span>
+                <span>{SELLER_WHATSAPP}</span>
               </li>
               <li className="flex items-center gap-2">
                 <Mail className="h-4 w-4 shrink-0" />
-                <span>hello@urbannest.co.ke</span>
+                <span>contact@homifyfurniture.co.ke</span>
               </li>
               <li className="flex items-start gap-2">
                 <Clock className="h-4 w-4 mt-0.5 shrink-0" />
-                <span>Mon - Sat: 9AM - 6PM</span>
+                <span>Mon - Sat: 8AM - 6PM</span>
               </li>
             </ul>
           </div>
         </div>
 
         {/* Bottom bar */}
-        <div className="mt-12 pt-6 border-t border-primary-foreground/20 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-primary-foreground/60">
+        <div className="mt-12 pt-6 border-t border-primary-foreground/20 flex flex-col md:flex-row justify-center items-center gap-4 text-sm text-primary-foreground/60">
           <p>&copy; {new Date().getFullYear()} UrbanNest Furniture. All rights reserved.</p>
           <div className="flex gap-6">
-            <Link href="/privacy" className="hover:text-primary-foreground transition-colors">
+            {/* <Link href="/privacy" className="hover:text-primary-foreground transition-colors">
               Privacy Policy
             </Link>
             <Link href="/terms" className="hover:text-primary-foreground transition-colors">
               Terms of Service
-            </Link>
+            </Link> */}
           </div>
         </div>
       </div>

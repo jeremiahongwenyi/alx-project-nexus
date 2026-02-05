@@ -37,7 +37,7 @@ export default function Header () {
             Custom Orders
           </Link>
           <Link
-            href=""
+            href="/about"
             className="text-sm font-medium text-foreground/80 hover:text-primary transition-colors"
           >
             About

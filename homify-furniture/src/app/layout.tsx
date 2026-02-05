@@ -6,6 +6,7 @@ import Footer from "@/components/layout/footer";
 import { Toaster } from "sonner";
 import { Providers } from "@/providers/providers";
 import CartSidebar from "@/components/cart/CartSidebar";
+import { WhatsAppButton } from "@/components/common/WhatsAppButton";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -33,8 +34,9 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <Providers>
-          <Header/>
+          <Header />
           <CartSidebar />
+          <WhatsAppButton />
           {children}
 
           <Footer />

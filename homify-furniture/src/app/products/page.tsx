@@ -12,7 +12,7 @@ function ProductsPageContent() {
   const dispatch = useAppDispatch();
   const router = useRouter();
   const searchParams = useSearchParams();
-  const categoryParam = searchParams.get("category") as CategoryId | 'all' | null;
+  const categoryParam = searchParams.get("category") as CategoryId | null;
   const { selectedCategory } = useAppSelector((state) => state.products);
 
   // Sync URL params with Redux state on mount
