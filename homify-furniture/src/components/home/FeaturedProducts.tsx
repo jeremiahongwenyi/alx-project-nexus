@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import  Link  from "next/link";
 import { ArrowRight } from "lucide-react";
 
+
 export  default function FeaturedProducts() {
   // Show first 4 products as featured
   const featuredProducts = products.slice(0, 4);
@@ -28,7 +29,7 @@ export  default function FeaturedProducts() {
           </Button>
         </div>
 
-        <ProductGrid products={featuredProducts} />
+        <ProductGrid />
       </div>
     </section>
   );

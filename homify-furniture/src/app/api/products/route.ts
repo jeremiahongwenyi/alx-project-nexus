@@ -45,7 +45,7 @@ export async function GET(request: NextRequest) {
         });
       }
       
-      return NextResponse.json({ products });
+      return NextResponse.json(products );
     }
     
   } catch (error) {
@@ -61,7 +61,7 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     const productData = await request.json();
-    const { id, ...data } = productData;
+    const { id, isFeaturedProduct= false, ...data } = productData;
     
     if (!data.name || !data.price) {
       return NextResponse.json(
@@ -83,7 +83,26 @@ export async function POST(request: NextRequest) {
         id,
         ...data,
       });
-    } else {
+    } if(isFeaturedProduct) {
+
+
+      const productsRef = ref(database, 'featuredproducts');
+      const newProductRef = ref(database, `featuredproducts/${Date.now()}_${Math.random().toString(36).substr(2, 9)}`);
+      
+      const productWithMetadata = {
+        ...data,
+        createdAt: Date.now(),
+        updatedAt: Date.now(),
+      };
+      
+      await set(newProductRef, productWithMetadata);
+      
+      return NextResponse.json({
+        success: true,
+        id: newProductRef.key,
+        ...productWithMetadata,
+      });
+    }  else {
       // Create new product
       const productsRef = ref(database, 'products');
       const newProductRef = ref(database, `products/${Date.now()}_${Math.random().toString(36).substr(2, 9)}`);

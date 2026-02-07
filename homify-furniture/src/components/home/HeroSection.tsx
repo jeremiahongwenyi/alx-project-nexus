@@ -1,10 +1,63 @@
-import React from 'react'
+"use client"
+
+import React, { use } from 'react'
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
+import { api } from "@/services/api"
 
 export default function HeroSection() {
+
+  const addProduct = async ()=>{
+
+    try {
+      const newProduct: any = {
+    name: "Oslo King Platform Bed",
+    description: "Scandinavian-inspired platform bed with a clean, minimalist design. Crafted from solid teak wood with a natural honey finish.",
+    price: 145000,
+    category: "beds",
+    image: "https://res.cloudinary.com/dnmc3a0ty/image/upload/v1770493230/custom-orders/j5edfzuncmgvhdytdwqg.jpg",
+    inStock: true,
+    stockCount: 3,
+    isNew: true,
+    rating: 4.9,
+    reviewCount: 18,
+    specifications: {
+      dimensions: "210cm x 185cm x 45cm",
+      material: "Solid Teak Wood",
+      weight: "85kg",
+      assembly: "Professional assembly recommended",
+      warranty: "5 years",
+    },
+  }
+  // {
+  //   id: "prod-003",
+  //   name: "Heritage 6-Seater Dining Set",
+  //   description: "Classic mahogany dining table with six matching chairs. Features intricate craftsmanship and cream upholstered seats.",
+  //   price: 185000,
+  //   originalPrice: 220000,
+  //   category: "dining",
+  //   image: diningSet,
+  //   inStock: true,
+  //   stockCount: 2,
+  //   rating: 4.7,
+  //   reviewCount: 12,
+  //   specifications: {
+  //     dimensions: "180cm x 100cm x 76cm (table)",
+  //     material: "Solid Mahogany Wood",
+  //     weight: "120kg (full set)",
+  //     assembly: "Professional assembly required",
+  //     warranty: "3 years",
+  //   },
+  // },
+
+      const response = await api.saveProduct(newProduct);
+      console.log("Product added:", response);
+    } catch (error) {
+      console.error("Error adding product:", error);
+    }
+  }
   return (
      <section className="relative px-4  h-[70vh] md:h-[80vh] min-h-125 overflow-hidden">
       {/* Background Image */}
@@ -52,6 +105,8 @@ export default function HeroSection() {
             >
               <Link href="/customorders">Custom Orders</Link>
             </Button>
+
+            <Button onClick={addProduct}>Add Product</Button>
           </div>
         </div>
       </div>

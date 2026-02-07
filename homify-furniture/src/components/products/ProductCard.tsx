@@ -28,7 +28,7 @@ export function ProductCard({ product }: ProductCardProps) {
         href={`/product/${product.id}`}
         className="relative block aspect-4/3 overflow-hidden"
       >
-        <Image
+        <img
           src={product.image}
           alt={product.name}
           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
