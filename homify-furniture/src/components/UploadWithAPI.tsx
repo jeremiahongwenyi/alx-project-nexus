@@ -1,9 +1,6 @@
-"use client";
-
-import { useState, useRef, useCallback } from "react";
+import { useState, useRef, useCallback, useEffect } from "react";
 import { Upload, X, Loader2, Check, AlertCircle } from "lucide-react";
 import { api } from "@/services/api";
-
 
 interface UploadResult {
   url: string;
@@ -11,10 +8,12 @@ interface UploadResult {
 }
 
 interface UploadWithAPIProps {
-  onUploadComplete: (results: UploadResult[]) => void;
+  onUploadComplete: (results: UploadResult[] | File[]) => void;
   maxFiles?: number;
   folder?: string;
   maxSize?: number; // in MB
+  autoUpload?: boolean; // If false, just select files without uploading
+  reset?: boolean; // Trigger to reset files and previews
 }
 
 export function UploadWithAPI({
@@ -22,6 +21,8 @@ export function UploadWithAPI({
   maxFiles = 5,
   folder = "",
   maxSize = 10,
+  autoUpload = true,
+  reset = false,
 }: UploadWithAPIProps) {
   const [files, setFiles] = useState<File[]>([]);
   const [previews, setPreviews] = useState<string[]>([]);
@@ -30,6 +31,19 @@ export function UploadWithAPI({
   const [uploadedResults, setUploadedResults] = useState<UploadResult[]>([]);
   const [error, setError] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // Reset files and previews when reset prop changes
+  useEffect(() => {
+    if (reset) {
+      setFiles([]);
+      setPreviews([]);
+      setUploadedResults([]);
+      setError(null);
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
+      }
+    }
+  }, [reset]);
 
   const validateFile = (file: File): string | null => {
     if (!file.type.startsWith("image/")) {
@@ -77,8 +91,13 @@ export function UploadWithAPI({
       if (fileInputRef.current) {
         fileInputRef.current.value = "";
       }
+
+      // If autoUpload is false, just pass the files to parent component
+      if (!autoUpload) {
+        onUploadComplete([...files, ...validFiles]);
+      }
     },
-    [files, maxFiles, maxSize],
+    [files, maxFiles, maxSize, autoUpload, onUploadComplete],
   );
 
   // Changed: Wrapper for input onChange event
@@ -102,37 +121,41 @@ export function UploadWithAPI({
 
       setFiles(newFiles);
       setPreviews(newPreviews);
+
+      // Update parent component with the new files list
+      if (!autoUpload) {
+        onUploadComplete(newFiles);
+      }
     },
-    [files, previews],
+    [files, previews, autoUpload, onUploadComplete],
   );
 
- // In your UploadWithAPI component
-const handleUpload = async () => {
-  if (files.length === 0) return;
+  // In your UploadWithAPI component
+  const handleUpload = async () => {
+    if (files.length === 0) return;
 
-  setUploading(true);
-  setError(null);
+    setUploading(true);
+    setError(null);
 
-  try {
-    // Upload files via API route
-    const results = await api.uploadMultipleImages(files, folder);
-    console.log("Upload results:", results);
+    try {
+      // Upload files via API route
+      const results = await api.uploadMultipleImages(files, folder);
+      console.log("Upload results:", results);
 
-    // Check if upload was successful
-    if (results && results.length > 0) {
-      setUploadedResults(results);
-      onUploadComplete(results);
-    } else {
-      throw new Error("No results returned");
+      // Check if upload was successful
+      if (results && results.length > 0) {
+        setUploadedResults(results);
+        onUploadComplete(results);
+      } else {
+        throw new Error("No results returned");
+      }
+    } catch (err: any) {
+      setError(err.message || "Upload failed. Please try again.");
+      console.error("Upload error:", err);
+    } finally {
+      setUploading(false);
     }
-
-  } catch (err: any) {
-    setError(err.message || "Upload failed. Please try again.");
-    console.error("Upload error:", err);
-  } finally {
-    setUploading(false);
-  }
-};
+  };
 
   const handleDragOver = useCallback((e: React.DragEvent) => {
     e.preventDefault();
@@ -162,7 +185,7 @@ const handleUpload = async () => {
           </p>
         </div>
 
-        {files.length > 0 && !uploading && (
+        {files.length > 0 && !uploading && autoUpload && (
           <button
             type="button"
             onClick={handleUpload}
@@ -288,7 +311,7 @@ const handleUpload = async () => {
       )}
 
       {/* Uploaded Results */}
-      {uploadedResults.length > 0 && (
+      {/* {uploadedResults.length > 0 && (
         <div className="mt-4 p-4 bg-green-50 border border-green-200 rounded-lg">
           <h4 className="font-medium text-green-800 mb-2">Uploaded Images:</h4>
           <div className="space-y-2">
@@ -314,7 +337,7 @@ const handleUpload = async () => {
             ))}
           </div>
         </div>
-      )}
+      )} */}
     </div>
   );
 }

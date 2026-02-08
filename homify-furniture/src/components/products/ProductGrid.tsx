@@ -5,7 +5,6 @@ import { ProductCard } from "./ProductCard";
 import { PackageOpen } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { api } from "@/services/api";
-import { useEffect, useState } from "react";
 
 interface ProductGridProps {
   products?: Product[];
@@ -24,13 +23,6 @@ export default function ProductGrid({ category }: ProductGridProps) {
     enabled: true,
   });
 
-  const [featuredProducts, setFeaturedProducts] = useState<Product[]>([]);
-  useEffect(() => {
-    console.log("products in grid", products);
-    // Set featured products (first 4)
-    setFeaturedProducts(products.slice(0, 4));
-  }, [products]);
-
   const fetchProducts = async (category?: string) => {
     try {
       const response = await api.getProducts(category);
@@ -41,6 +33,10 @@ export default function ProductGrid({ category }: ProductGridProps) {
       throw error;
     }
   };
+
+  // Get featured products (first 4)
+  const featuredProducts = products.slice(0, 4);
+
   if (isLoading) {
     return (
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
