@@ -1,4 +1,3 @@
-import { products } from "@/data/products";
 import  ProductGrid from "@/components/products/ProductGrid";
 import { Button } from "@/components/ui/button";
 import  Link  from "next/link";
@@ -7,7 +6,6 @@ import { ArrowRight } from "lucide-react";
 
 export  default function FeaturedProducts() {
   // Show first 4 products as featured
-  const featuredProducts = products.slice(0, 4);
 
   return (
     <section className="py-16 px-4  md:py-24">

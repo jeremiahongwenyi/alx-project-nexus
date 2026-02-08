@@ -2,13 +2,14 @@
 
 import { useEffect, useState, useMemo } from "react";
 import { useAppSelector } from "@/store";
-import { products as allProducts } from "@/data/products";
 import { type Product } from "@/types/product";
 import { ProductCard } from "./ProductCard";
 import { FilterControls } from "./FilterControls";
 import { PaginationControls } from "./PaginationControls";
-import { Loader2 } from "lucide-react";
-import  EmptyState  from "./EmptyState";
+import { Loader2, PackageOpen } from "lucide-react";
+import EmptyState from "./EmptyState";
+import { useQuery } from "@tanstack/react-query";
+import { api } from "@/services/api";
 
 export function ProductCatalog() {
   const {
@@ -24,22 +25,32 @@ export function ProductCatalog() {
 
   const [accumulatedProducts, setAccumulatedProducts] = useState<Product[]>([]);
 
+  // Fetch products using TanStack Query
+  const {
+    data: allProducts = [],
+    isLoading,
+    error,
+  } = useQuery<Product[]>({
+    queryKey: ["products", selectedCategory],
+    queryFn: async () => {
+      const response = await api.getProducts(
+        selectedCategory !== "all" ? selectedCategory : undefined,
+      );
+      console.log("fetched products", response);
+      return response;
+    },
+    enabled: true,
+  });
+
   // Filter and sort products
   const filteredProducts = useMemo(() => {
     let filtered = allProducts;
 
-    console.log('all products', filtered);
-    
-    // Category filter
-    if (selectedCategory !== "all") {
-        console.log("category is not all");
-        
-      filtered = filtered.filter((p) => p.category === selectedCategory);
-    }
+    console.log("all products", filtered);
 
     // Search filter
     if (searchQuery) {
-        console.log("i have a search query", searchQuery);   
+      console.log("i have a search query", searchQuery);
       const query = searchQuery.toLowerCase();
       filtered = filtered.filter(
         (p) =>
@@ -65,15 +76,15 @@ export function ProductCatalog() {
       filtered.sort((a, b) => b.price - a.price);
     } else if (sortBy === "newest") {
       // Sort by ID or name as newest indicator (since createdAt doesn't exist)
-      filtered.sort((a, b) => b.id.localeCompare(a.id));
+      // filtered.sort((a, b) => b.id.localeCompare(a.id));
     } else if (sortBy === "rating") {
       filtered.sort((a, b) => (b.rating || 0) - (a.rating || 0));
     }
 
     console.log("final filtered", filtered);
-    
+
     return filtered;
-  }, [selectedCategory, searchQuery, priceRange, inStockOnly, sortBy]);
+  }, [allProducts, searchQuery, priceRange, inStockOnly, sortBy]);
 
   // Pagination calculations
   const totalProducts = filteredProducts.length;
@@ -124,13 +135,36 @@ export function ProductCatalog() {
   return (
     <div>
       {/* Filter Controls */}
-      <FilterControls totalResults={totalProducts} />
+      <FilterControls totalResults={filteredProducts.length} />
+
+      {/* Loading State */}
+      {isLoading && (
+        <div className="py-8 px-4 flex justify-center">
+          <div className="flex items-center gap-2 text-muted-foreground">
+            <Loader2 className="h-5 w-5 animate-spin" />
+            <span>Loading products...</span>
+          </div>
+        </div>
+      )}
+
+      {/* Error State */}
+      {error && (
+        <div className="flex flex-col items-center justify-center py-16 text-center px-4">
+          <PackageOpen className="h-16 w-16 text-destructive mb-4" />
+          <h3 className="font-semibold text-lg mb-2">Error loading products</h3>
+          <p className="text-muted-foreground">
+            {error instanceof Error
+              ? error.message
+              : "An error occurred while fetching products"}
+          </p>
+        </div>
+      )}
 
       {/* Empty State */}
-      {filteredProducts.length === 0 && <EmptyState />}
+      {!isLoading && !error && filteredProducts.length === 0 && <EmptyState />}
 
       {/* Products Grid */}
-      {filteredProducts.length > 0 && (
+      {!isLoading && !error && filteredProducts.length > 0 && (
         <>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 px-4 ">
             {displayProducts.map((product) => (
