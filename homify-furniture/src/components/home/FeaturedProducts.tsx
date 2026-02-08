@@ -5,7 +5,6 @@ import { ArrowRight } from "lucide-react";
 
 
 export  default function FeaturedProducts() {
-  // Show first 4 products as featured
 
   return (
     <section className="py-16 px-4  md:py-24">

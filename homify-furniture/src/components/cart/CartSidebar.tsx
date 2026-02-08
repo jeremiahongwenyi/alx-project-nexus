@@ -5,8 +5,8 @@ import { Button } from "@/components/ui/button";
 import { useCart } from "@/store/hooks";
 import { formatPrice } from "@/data/products";
 import Link from "next/link";
-import { StaticImageData } from "next/image";
-import Image from "next/image";
+import { toast } from "sonner";
+
 
 export default function CartSidebar() {
   const { items, total, isOpen, closeCart, updateQuantity, removeItem } =
@@ -52,7 +52,7 @@ export default function CartSidebar() {
                   key={item.product.id}
                   className="flex gap-4 bg-card p-3 rounded-lg"
                 >
-                  <Image
+                  <img
                     src={item.product.image}
                     alt={item.product.name}
                     className="w-20 h-20 object-cover rounded-md"
@@ -114,8 +114,9 @@ export default function CartSidebar() {
               <p className="text-xs text-muted-foreground">
                 Shipping calculated at checkout
               </p>
-              <Button className="w-full" size="lg" asChild>
-                <Link href="/checkout" onClick={closeCart}>
+              <Button className="w-full" size="lg" asChild onClick={()=>toast.error("Coming soon")}>
+                 {/* Proceed to Checkout */}
+                <Link href="" onClick={closeCart}>
                   Proceed to Checkout
                 </Link>
               </Button>

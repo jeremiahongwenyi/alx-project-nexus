@@ -5,6 +5,7 @@ import { ProductCard } from "./ProductCard";
 import { PackageOpen } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { api } from "@/services/api";
+import { useEffect, useState } from "react";
 
 interface ProductGridProps {
   products?: Product[];
@@ -14,7 +15,7 @@ interface ProductGridProps {
 
 export default function ProductGrid({ category }: ProductGridProps) {
   const {
-    data: products = [] ,
+    data: products = [],
     isLoading,
     error,
   } = useQuery<Product[]>({
@@ -23,17 +24,23 @@ export default function ProductGrid({ category }: ProductGridProps) {
     enabled: true,
   });
 
-  const fetchProducts = async (category?: string)=>{
-   try{
-     const response = await  api.getProducts(category)
-    console.log("fetched products", response);
-    return response;
-    
-   } catch (error){
-    console.log("error fetching products", error);
-    throw error;
-   }
-  }
+  const [featuredProducts, setFeaturedProducts] = useState<Product[]>([]);
+  useEffect(() => {
+    console.log("products in grid", products);
+    // Set featured products (first 4)
+    setFeaturedProducts(products.slice(0, 4));
+  }, [products]);
+
+  const fetchProducts = async (category?: string) => {
+    try {
+      const response = await api.getProducts(category);
+      console.log("fetched products", response);
+      return response;
+    } catch (error) {
+      console.log("error fetching products", error);
+      throw error;
+    }
+  };
   if (isLoading) {
     return (
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
@@ -68,7 +75,7 @@ export default function ProductGrid({ category }: ProductGridProps) {
     );
   }
 
-  if (products.length === 0) {
+  if (featuredProducts.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center py-16 text-center">
         <PackageOpen className="h-16 w-16 text-muted-foreground mb-4" />
@@ -82,7 +89,7 @@ export default function ProductGrid({ category }: ProductGridProps) {
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-      {products.map((product) => (
+      {featuredProducts.map((product) => (
         <ProductCard key={product.id} product={product} />
       ))}
     </div>
