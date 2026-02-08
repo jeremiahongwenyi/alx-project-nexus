@@ -92,21 +92,21 @@ export default function Header () {
               Home
             </Link>
             <Link
-              href=""
+              href="/products"
               className="text-sm font-medium py-2"
               onClick={() => setIsMobileMenuOpen(false)}
             >
               Shop
             </Link>
             <Link
-              href=""
+              href="/customorders"
               className="text-sm font-medium py-2"
               onClick={() => setIsMobileMenuOpen(false)}
             >
               Custom Orders
             </Link>
             <Link
-              href=""
+              href="/about"
               className="text-sm font-medium py-2"
               onClick={() => setIsMobileMenuOpen(false)}
             >
