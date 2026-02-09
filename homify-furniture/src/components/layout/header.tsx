@@ -48,9 +48,9 @@ export default function Header () {
           <Button variant="ghost" size="icon" className="hidden md:flex">
             <Search data-icon="inline-start" className="h-5 w-5" />
           </Button>
-          <Button variant="ghost" size="icon" className="hidden md:flex">
+          {/* <Button variant="ghost" size="icon" className="hidden md:flex">
             <User data-icon="inline-start" className="h-5 w-5" />
-          </Button>
+          </Button> */}
           <Button
             variant="ghost"
             size="icon"
