@@ -2,14 +2,14 @@
 
 import { useEffect, useState, useMemo } from "react";
 import { useAppSelector } from "@/store";
+import { useQuery } from "@tanstack/react-query";
+import { api } from "@/services/api";
 import { type Product } from "@/types/product";
 import { ProductCard } from "./ProductCard";
 import { FilterControls } from "./FilterControls";
 import { PaginationControls } from "./PaginationControls";
-import { Loader2, PackageOpen } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import EmptyState from "./EmptyState";
-import { useQuery } from "@tanstack/react-query";
-import { api } from "@/services/api";
 
 export function ProductCatalog() {
   const {
@@ -25,32 +25,23 @@ export function ProductCatalog() {
 
   const [accumulatedProducts, setAccumulatedProducts] = useState<Product[]>([]);
 
-  // Fetch products using TanStack Query
-  const {
-    data: allProducts = [],
-    isLoading,
-    error,
-  } = useQuery<Product[]>({
-    queryKey: ["products", selectedCategory],
-    queryFn: async () => {
-      const response = await api.getProducts(
-        selectedCategory !== "all" ? selectedCategory : undefined,
-      );
-      console.log("fetched products", response);
-      return response;
-    },
-    enabled: true,
+  // Fetch all products
+  const { data: allProducts = [], isLoading } = useQuery<Product[]>({
+    queryKey: ["products"],
+    queryFn: () => api.getProducts(),
   });
 
   // Filter and sort products
   const filteredProducts = useMemo(() => {
     let filtered = allProducts;
 
-    console.log("all products", filtered);
+    // Category filter
+    if (selectedCategory && selectedCategory !== "all") {
+      filtered = filtered.filter((p) => p.category === selectedCategory);
+    }
 
     // Search filter
     if (searchQuery) {
-      console.log("i have a search query", searchQuery);
       const query = searchQuery.toLowerCase();
       filtered = filtered.filter(
         (p) =>
@@ -58,11 +49,6 @@ export function ProductCatalog() {
           p.description?.toLowerCase().includes(query),
       );
     }
-
-    // Price range filter
-    // filtered = filtered.filter(
-    //   (p) => p.price >= priceRange.min && p.price <= priceRange.max,
-    // );
 
     // Stock filter
     if (inStockOnly) {
@@ -74,17 +60,12 @@ export function ProductCatalog() {
       filtered.sort((a, b) => a.price - b.price);
     } else if (sortBy === "price-desc") {
       filtered.sort((a, b) => b.price - a.price);
-    } else if (sortBy === "newest") {
-      // Sort by ID or name as newest indicator (since createdAt doesn't exist)
-      // filtered.sort((a, b) => b.id.localeCompare(a.id));
     } else if (sortBy === "rating") {
       filtered.sort((a, b) => (b.rating || 0) - (a.rating || 0));
     }
 
-    console.log("final filtered", filtered);
-
     return filtered;
-  }, [allProducts, searchQuery, priceRange, inStockOnly, sortBy]);
+  }, [allProducts, selectedCategory, searchQuery, inStockOnly, sortBy]);
 
   // Pagination calculations
   const totalProducts = filteredProducts.length;
@@ -120,18 +101,6 @@ export function ProductCatalog() {
 
   const hasMore = currentPage < totalPages;
 
-  // Debug log
-  if (typeof window !== "undefined") {
-    console.log("ProductCatalog Debug:", {
-      filteredProducts: filteredProducts.length,
-      displayProducts: displayProducts.length,
-      paginatedProducts: paginatedProducts.length,
-      viewMode,
-      currentPage,
-      totalPages,
-    });
-  }
-
   return (
     <div>
       {/* Filter Controls */}
@@ -147,26 +116,13 @@ export function ProductCatalog() {
         </div>
       )}
 
-      {/* Error State */}
-      {error && (
-        <div className="flex flex-col items-center justify-center py-16 text-center px-4">
-          <PackageOpen className="h-16 w-16 text-destructive mb-4" />
-          <h3 className="font-semibold text-lg mb-2">Error loading products</h3>
-          <p className="text-muted-foreground">
-            {error instanceof Error
-              ? error.message
-              : "An error occurred while fetching products"}
-          </p>
-        </div>
-      )}
-
       {/* Empty State */}
-      {!isLoading && !error && filteredProducts.length === 0 && <EmptyState />}
+      {!isLoading && filteredProducts.length === 0 && <EmptyState />}
 
       {/* Products Grid */}
-      {!isLoading && !error && filteredProducts.length > 0 && (
+      {!isLoading && filteredProducts.length > 0 && (
         <>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 px-4 ">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 px-4">
             {displayProducts.map((product) => (
               <ProductCard key={product.id} product={product} />
             ))}

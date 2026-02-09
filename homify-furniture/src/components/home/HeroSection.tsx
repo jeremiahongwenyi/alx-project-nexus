@@ -1,65 +1,43 @@
-"use client"
+"use client";
 
-import React, { use } from 'react'
+import React, { use } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
-import { api } from "@/services/api"
+import { api } from "@/services/api";
 
 export default function HeroSection() {
-
-  const addProduct = async ()=>{
-
-    try {
-      const newProduct: any = {
-    name: "Oslo King Platform Bed",
-    description: "Scandinavian-inspired platform bed with a clean, minimalist design. Crafted from solid teak wood with a natural honey finish.",
-    price: 145000,
-    category: "beds",
-    image: "https://res.cloudinary.com/dnmc3a0ty/image/upload/v1770493230/custom-orders/j5edfzuncmgvhdytdwqg.jpg",
-    inStock: true,
-    stockCount: 3,
-    isNew: true,
-    rating: 4.9,
-    reviewCount: 18,
-    specifications: {
-      dimensions: "210cm x 185cm x 45cm",
-      material: "Solid Teak Wood",
-      weight: "85kg",
-      assembly: "Professional assembly recommended",
-      warranty: "5 years",
-    },
-  }
-  // {
-  //   id: "prod-003",
-  //   name: "Heritage 6-Seater Dining Set",
-  //   description: "Classic mahogany dining table with six matching chairs. Features intricate craftsmanship and cream upholstered seats.",
-  //   price: 185000,
-  //   originalPrice: 220000,
-  //   category: "dining",
-  //   image: diningSet,
+  // const addProduct = async () => {
+  //   try {
+  //     const newProduct: any = {
+  //       name: "Woven Rattan Storage Cabinet",
+  //   description: "Handcrafted storage cabinet with natural rattan weave doors. Perfect for living rooms or bedrooms with a bohemian touch.",
+  //   price: 38500,
+  //   originalPrice: 48000,
+  //   category: "cabinets",
+  //   image: "https://res.cloudinary.com/dnmc3a0ty/image/upload/v1770570457/custom-orders/sqqmcddtxdglfx40nthw.jpg",
   //   inStock: true,
-  //   stockCount: 2,
-  //   rating: 4.7,
-  //   reviewCount: 12,
+  //   stockCount: 6,
+  //   isNew: true,
+  //   rating: 4.5,
+  //   reviewCount: 9,
   //   specifications: {
-  //     dimensions: "180cm x 100cm x 76cm (table)",
-  //     material: "Solid Mahogany Wood",
-  //     weight: "120kg (full set)",
-  //     assembly: "Professional assembly required",
-  //     warranty: "3 years",
+  //     dimensions: "100cm x 45cm x 80cm",
+  //     material: "Oak Wood, Natural Rattan",
+  //     weight: "35kg",
+  //     assembly: "Pre-assembled",
+  //     warranty: "1 year",
   //   },
-  // },
-
-      const response = await api.saveProduct(newProduct);
-      console.log("Product added:", response);
-    } catch (error) {
-      console.error("Error adding product:", error);
-    }
-  }
+  //     };
+  //     const response = await api.saveProduct(newProduct);
+  //     console.log("Product added:", response);
+  //   } catch (error) {
+  //     console.error("Error adding product:", error);
+  //   }
+  // };
   return (
-     <section className="relative px-4  h-[70vh] md:h-[80vh] min-h-125 overflow-hidden">
+    <section className="relative px-4  h-[70vh] md:h-[80vh] min-h-125 overflow-hidden">
       {/* Background Image */}
       <Image
         src="/hero-living-room.png"
@@ -105,11 +83,11 @@ export default function HeroSection() {
             >
               <Link href="/customorders">Custom Orders</Link>
             </Button>
-
-            <Button onClick={addProduct}>Add Product</Button>
+{/* 
+            <Button onClick={addProduct}>Add Product</Button> */}
           </div>
         </div>
       </div>
     </section>
-  )
+  );
 }
