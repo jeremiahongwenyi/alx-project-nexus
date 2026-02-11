@@ -15,15 +15,20 @@ function ProductsPageContent() {
   const categoryParam = searchParams.get("category") as CategoryId | null;
   const { selectedCategory } = useAppSelector((state) => state.products);
 
-  // Sync URL params with Redux state on mount
+  // Sync URL params with Redux state on mount only
   useEffect(() => {
     if (categoryParam && categoryParam !== selectedCategory) {
       dispatch(setCategory(categoryParam));
+    } else if (!categoryParam && selectedCategory !== "all") {
+      // Reset to all if no category param and state is not all
+      dispatch(setCategory("all"));
     }
-  }, [categoryParam, selectedCategory, dispatch]);
+  }, [categoryParam]);
 
   const handleCategoryChange = (category: CategoryId) => {
+    console.log("category", category);
     dispatch(setCategory(category));
+
     if (category === "all") {
       router.push("/products");
     } else {

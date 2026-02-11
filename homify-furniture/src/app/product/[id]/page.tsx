@@ -348,9 +348,9 @@ export default function ProductDetailPage() {
 
             {/* Additional Info */}
             <div className="border-t pt-6 space-y-3 text-sm text-muted-foreground">
-              <p>✓ Free shipping on orders over KES 5,000</p>
+              {/* <p>✓ Free shipping on orders over KES 5,000</p>
               <p>✓ 30-day money-back guarantee</p>
-              <p>✓ Secure checkout and payment</p>
+              <p>✓ Secure checkout and payment</p> */}
             </div>
           </div>
         </div>

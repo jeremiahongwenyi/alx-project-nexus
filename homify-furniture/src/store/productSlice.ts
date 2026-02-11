@@ -43,25 +43,31 @@ const productSlice = createSlice({
     setCategory: (state, action: PayloadAction<CategoryId>) => {
       state.selectedCategory = action.payload;
       state.currentPage = 1; // Reset to first page
+      console.log('selectedCategory', action.payload);
     },
     setSortBy: (state, action: PayloadAction<SortOption>) => {
       state.sortBy = action.payload;
       state.currentPage = 1; // Reset to first page
+      console.log('sortBy', action.payload);
     },
     setPriceRange: (state, action: PayloadAction<PriceRange>) => {
       state.priceRange = action.payload;
       state.currentPage = 1; // Reset to first page
+      console.log('priceRange', action.payload);
     },
     setInStockOnly: (state, action: PayloadAction<boolean>) => {
       state.inStockOnly = action.payload;
       state.currentPage = 1; // Reset to first page
+      console.log('inStockOnly', action.payload);
     },
     setSearchQuery: (state, action: PayloadAction<string>) => {
       state.searchQuery = action.payload;
       state.currentPage = 1; // Reset to first page
+      console.log('searchQuery', action.payload);   
     },
     setViewMode: (state, action: PayloadAction<ViewMode>) => {
       state.viewMode = action.payload;
+      console.log('viewMode', action.payload);   
     },
     setCurrentPage: (state, action: PayloadAction<number>) => {
       state.currentPage = action.payload;
@@ -70,7 +76,15 @@ const productSlice = createSlice({
       state.itemsPerPage = action.payload;
     },
     resetFilters: (state) => {
-      return initialState;
+      console.log("Resetting filters");
+      state.selectedCategory = "all";
+      state.sortBy = "default";
+      state.priceRange = { min: 0, max: 10000 };
+      state.inStockOnly = false;
+      state.searchQuery = "";
+      state.viewMode = "pagination";
+      state.currentPage = 1;
+      state.itemsPerPage = 12;
     },
   },
 });

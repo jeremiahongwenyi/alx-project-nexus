@@ -34,7 +34,7 @@ export function ProductCatalog() {
   // Filter and sort products
   const filteredProducts = useMemo(() => {
     let filtered = allProducts;
-
+    console.log ('Am in filtered products')
     // Category filter
     if (selectedCategory && selectedCategory !== "all") {
       filtered = filtered.filter((p) => p.category === selectedCategory);
@@ -42,30 +42,44 @@ export function ProductCatalog() {
 
     // Search filter
     if (searchQuery) {
+      console.log('search by query', searchQuery);
+      
       const query = searchQuery.toLowerCase();
       filtered = filtered.filter(
         (p) =>
-          p.name.toLowerCase().includes(query) ||
-          p.description?.toLowerCase().includes(query),
+          p.name.toLowerCase().includes(query) 
+          // ||p.description?.toLowerCase().includes(query),
       );
     }
 
     // Stock filter
     if (inStockOnly) {
       filtered = filtered.filter((p) => p.inStock);
+            console.log('search by inStockOnly', inStockOnly, priceRange);
     }
 
     // Sort
     if (sortBy === "price-asc") {
+      console.log('ascending'); 
       filtered.sort((a, b) => a.price - b.price);
     } else if (sortBy === "price-desc") {
+      console.log('Descending');
+      
       filtered.sort((a, b) => b.price - a.price);
     } else if (sortBy === "rating") {
       filtered.sort((a, b) => (b.rating || 0) - (a.rating || 0));
     }
 
+
+    if(priceRange) {
+      if(priceRange.min === 0 && priceRange.max === 10000 ) filtered = filtered;
+      else filtered = filtered.filter((p) => p.price >= priceRange.min && p.price <= priceRange.max);
+      console.log('search by priceRange', priceRange);
+    }
+    console.log('my filtered list', filtered);
+
     return filtered;
-  }, [allProducts, selectedCategory, searchQuery, inStockOnly, sortBy]);
+  }, [allProducts, selectedCategory, searchQuery, inStockOnly, sortBy, priceRange]);
 
   // Pagination calculations
   const totalProducts = filteredProducts.length;
