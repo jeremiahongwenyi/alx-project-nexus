@@ -93,7 +93,7 @@ const About = () => {
                   Our Location
                 </h3>
                 <div className="text-muted-foreground space-y-2">
-                  <p className="font-medium text-foreground">UrbanNest Furniture Showroom</p>
+                  <p className="font-medium text-foreground">Homify Furniture Showroom</p>
                   <p>Wataalam, Ruiru</p>
                   <p>Along Kamiti Road</p>
                   <p>Kiambu County, Kenya</p>
@@ -119,7 +119,7 @@ const About = () => {
                     <div>
                       <p className="font-medium text-foreground">Phone</p>
                       <a href="tel:+254712345678" className="hover:text-primary transition-colors">
-                        +254 712 345 678
+                      +254719352072
                       </a>
                     </div>
                   </li>
@@ -128,7 +128,7 @@ const About = () => {
                     <div>
                       <p className="font-medium text-foreground">Email</p>
                       <a href="mailto:hello@urbannest.co.ke" className="hover:text-primary transition-colors">
-                        hello@urbannest.co.ke
+                     contact@homifyfurniture.co.ke
                       </a>
                     </div>
                   </li>

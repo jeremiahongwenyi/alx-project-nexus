@@ -12,8 +12,8 @@ export function CategoryBar({
   onSelectCategory,
 }: CategoryBarProps) {
   const allCategories = [
-    // { id: "all" as const, name: "All Products" },
-    ...categories,
+    { id: "all" as const, name: "All Products" },
+    ...categories.filter((c) => c.id !== "all"),
   ];
 
   return (
